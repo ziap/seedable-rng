@@ -4,7 +4,7 @@
  * It can be a drop-in replacement for Math.random in case you need a high
  * quality, seedable, albeit slow (due to JavaScript) random number generator.
  *
- * I implement Xoshiro256+ instead of Xoshiro256++ because it's faster and the
+ * I implement Xoshiro256+ instead of Xoshiro256** because it's faster and the
  * bad low bits are discarded when converting to floating point anyways.
  *
  * @param {Uint8Array} [seed] - The byte sequence used to seed the RNG.
