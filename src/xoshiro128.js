@@ -20,7 +20,7 @@ export default function Xoshiro128(seed) {
     // It's required to prevent starting from a state with a large fraction of
     // bits set to zero which is impossible to escape from for shift-register
     // generators, while retaining the property of randomizing long strings
-    // TODO: Switch to Murmur3
+    // TODO: Switch to Murmur3, somehow directly hash the seed to 128 bit
     let seed_n = 0xcbf29ce484222325n
     for (let i = 0; i < seed.length; ++i) {
       seed_n ^= BigInt(seed[i])
