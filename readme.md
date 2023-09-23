@@ -93,19 +93,21 @@ Seed.rand64() // A random 64-bit seed generated from `crypto.getRandomValues`
 
 ## Generators
 
-| Generator        | PCG-32     | Xoshiro256                |
-| ---------------- | ---------- | ------------------------- |
-| State size       | 64-bit     | **256-bit**               |
-| Output precision | 32-bit     | **52-bit**                |
-| Speed            | **Fast**   | Slow                      |
+| Generator        | PCG-32     | Xoshiro128 | Xoshiro256                |
+| ---------------- | ---------- | ---------- | ------------------------- |
+| State size       | 64-bit     | 128-bit    | **256-bit**               |
+| Output precision | 32-bit     | 32-bit     | **52-bit**                |
+| Speed            | **Fast**   | **Fast**   | Slow                      |
 
 **Note:**
 - For speed, look at the [benchmark](#results)
-- PCG-32 is the PCG-XSH-RR 64/32 variant
-- Xoshiro256 is the Xoshiro256+ variant
-- Xoshiro256 only output 52 bits because the lower bits have bad quality and are
-discarded during floating point generation
-- Xoshiro256 is only slow because JavaScript, normally it's even faster than PCG
+- Large state size often means better statistical quality
+- `PCG-32` is the `PCG-XSH-RR 64/32` variant
+- `Xoshiro256` is the `Xoshiro256+` variant
+- `Xoshiro256` only output 52 bits because the lower bits have bad quality and
+are discarded during floating point generation
+- `Xoshiro256` is only slow because JavaScript, normally it's much faster
+- `Xoshiro128` is the `Xoshiro128**` variant
 
 ## Benchmarks
 
@@ -129,31 +131,31 @@ On browsers
 
 Deno (1.36.0)
 
-| Generator      | Math.random | PCG-32      | Xoshiro256 |
-| -------------- | ----------- | ----------- | ---------- |
-| Monte Carlo PI | 4364 ms     | **2140 ms** | 10.81 s    |
-| Shuffle array  | 3266 ms     | **1686 ms** | 8070 ms    |
+| Generator      | Math.random | PCG-32      | Xoshiro128 | Xoshiro256 |
+| -------------- | ----------- | ----------- | ---------- | ---------- |
+| Monte Carlo PI | 4306 ms     | **2142 ms** | 2914 ms    | 12.88 s    |
+| Shuffle array  | 3426 ms     | **1682 ms** | 1838 ms    | 8854 ms    |
 
 NodeJS (18.17.1)
 
-| Generator      | Math.random | PCG-32  | Xoshiro256 |
-| -------------- | ----------- | ------- | ---------- |
-| Monte Carlo PI | **4080 ms** | 50.86 s | 309.8 s    |
-| Shuffle array  | **3494 ms** | 27.82 s | 162.1 s    |
+| Generator      | Math.random | PCG-32  | Xoshiro128  |Xoshiro256 |
+| -------------- | ----------- | ------- | ----------- |---------- |
+| Monte Carlo PI | 4118 ms     | 50.81 s | **2914 ms** |305.4 s    |
+| Shuffle array  | 3573 ms     | 27.02 s | **1650 ms** |158.7 s    |
 
 Firefox (116.0.3)
 
-| Generator      | Math.random | PCG-32  | Xoshiro256 |
-| -------------- | ----------- | ------- | ---------- |
-| Monte Carlo PI | **1495 ms** | 57.07 s | 218.5 s    |
-| Shuffle array  | **2512 ms** | 44.35 s | 143.9 s    |
+| Generator      | Math.random | PCG-32  | Xoshiro128 | Xoshiro256 |
+| -------------- | ----------- | ------- | ---------- | ---------- |
+| Monte Carlo PI | **1463 ms** | 57.65 s | 10.29 s    | 216.7 s    |
+| Shuffle array  | **2048 ms** | 39.48 s | 8782 ms    | 133.0 s    |
 
 Brave (116.1.57.53)
 
-| Generator      | Math.random | PCG-32      | Xoshiro256 |
-| -------------- | ----------- | ----------- | ---------- |
-| Monte Carlo PI | 4170 ms     | **2128 ms** | 9710 ms    |
-| Shuffle array  | 3144 ms     | **1700 ms** | 7128 ms    |
+| Generator      | Math.random | PCG-32      | Xoshiro128 | Xoshiro256 |
+| -------------- | ----------- | ----------- | ---------- | ---------- |
+| Monte Carlo PI | 4090 ms     | **2104 ms** | 2895 ms    | 10.72 s    |
+| Shuffle array  | 3212 ms     | **1816 ms** | 1816 ms    | 7341 ms    |
 
 ## License
 

@@ -1,11 +1,12 @@
-import { PCG32, Xoshiro256, Seed } from "../src/index.js"
+import { PCG32, Xoshiro256, Xoshiro128, Seed } from "../src/index.js"
 
-const pcg = PCG32(Seed.default())
-const xoshiro = Xoshiro256(Seed.default())
+const rng_pcg32 = PCG32(Seed.default())
+const rng_xoshiro256 = Xoshiro256(Seed.default())
+const rng_xoshiro128 = Xoshiro128(Seed.default())
 
 const TOTAL = 1e6
 
-export function MathRandom() {
+export function math_random() {
   let hit = 0
   for (let i = 0; i < TOTAL; ++i) {
     let x = Math.random()
@@ -17,11 +18,11 @@ export function MathRandom() {
   return 4 * hit / TOTAL
 }
 
-export function Xoshiro() {
+export function xoshiro256() {
   let hit = 0
   for (let i = 0; i < TOTAL; ++i) {
-    let x = xoshiro()
-    let y = xoshiro()
+    let x = rng_xoshiro256()
+    let y = rng_xoshiro256()
 
     if (x * x + y * y <= 1) ++hit
   }
@@ -29,11 +30,23 @@ export function Xoshiro() {
   return 4 * hit / TOTAL
 }
 
-export function PCG() {
+export function xoshiro128() {
   let hit = 0
   for (let i = 0; i < TOTAL; ++i) {
-    let x = pcg()
-    let y = pcg()
+    let x = rng_xoshiro128()
+    let y = rng_xoshiro128()
+
+    if (x * x + y * y <= 1) ++hit
+  }
+
+  return 4 * hit / TOTAL
+}
+
+export function pcg32() {
+  let hit = 0
+  for (let i = 0; i < TOTAL; ++i) {
+    let x = rng_pcg32()
+    let y = rng_pcg32()
 
     if (x * x + y * y <= 1) ++hit
   }

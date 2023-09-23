@@ -1,3 +1,5 @@
+// TODO: Add 64-bit variant (possibly PCG-64 DXSM)
+
 const IS_LITTLE_EDIAN = (() => {
   const array = new Uint16Array(1)
   const words = new Uint8Array(array.buffer)
@@ -28,7 +30,7 @@ export default function PCG32(seed) {
   // Storing the state in a BigUint64Array instead of just a Bigint because
   // - Automatic wrapping (no % 2^64 or its bitwise equivalent)
   // - (Hopefully) the runtime will optimize this into fast 64-bit operations
-  let state = new BigUint64Array([0xcafef00dd15ea5e5n])
+  let state = new BigUint64Array(1)
   let state_view = new Uint32Array(state.buffer)
 
   if (seed) {
@@ -46,6 +48,7 @@ export default function PCG32(seed) {
     // another hash function
     const chunks = new BigUint64Array(seed.buffer)
     for (let i = 0; i < chunks.length; ++i) {
+      state[0] += 0xcafef00dd15ea5e5n
       state[0] += chunks[i]
       state[0] *= MUL
       state[0] += INC
